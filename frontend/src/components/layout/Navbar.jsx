@@ -434,6 +434,7 @@ export default function Navbar() {
                 <Link to="/creator/editing-requests" className="nav-drawer-link" onClick={() => setMobileOpen(false)}><Film size={18} /> Editing Requests</Link>
                 <Link to="/creator/video-studio" className="nav-drawer-link" onClick={() => setMobileOpen(false)}><Clapperboard size={18} /> Video Studio</Link>
                 <Link to="/creator/ai-generator" className="nav-drawer-link" onClick={() => setMobileOpen(false)}><Sparkles size={18} /> AI Generator</Link>
+                <Link to="/creator/gemini-assistant" className="nav-drawer-link" onClick={() => setMobileOpen(false)}><MessageCircle size={18} /> Gemini Assistant</Link>
               </>
             )}
             {user?.role === 'client' && (

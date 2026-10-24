@@ -61,6 +61,7 @@ import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import StudioProjectsPage from './pages/creator/StudioProjectsPage'
 import StudioEditorPage from './pages/creator/StudioEditorPage'
 import AIGeneratorPage from './pages/creator/AIGeneratorPage'
+import GeminiAssistantPage from './pages/creator/GeminiAssistantPage'
 
 // Informational Pages
 import AboutPage from './pages/public/AboutPage'
@@ -239,6 +240,12 @@ function AppRoutes() {
         <ProtectedRoute allowedRoles={['creator']}>
           <Navbar />
           <AIGeneratorPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/creator/gemini-assistant" element={
+        <ProtectedRoute allowedRoles={['creator']}>
+          <Navbar />
+          <GeminiAssistantPage />
         </ProtectedRoute>
       } />
 

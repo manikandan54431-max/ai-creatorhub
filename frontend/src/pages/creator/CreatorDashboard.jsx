@@ -185,6 +185,7 @@ export default function CreatorDashboard() {
                 { icon: Star, label: 'My Reviews', href: '/creator/reviews', color: 'var(--color-warning)' },
                 { icon: Clapperboard, label: '🎬 Video Studio', href: '/creator/video-studio', color: 'var(--color-accent)' },
                 { icon: Sparkles, label: '✨ AI Generator', href: '/creator/ai-generator', color: 'var(--color-accent)' },
+                { icon: MessageCircle, label: '💬 Gemini Assistant', href: '/creator/gemini-assistant', color: '#7c3aed' },
               ].map(({ icon: Icon, label, href, color }) => (
                 <Link key={label} to={href} style={{ textDecoration: 'none' }}>
                   <div style={{

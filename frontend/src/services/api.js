@@ -121,6 +121,12 @@ export const aiAPI = {
   }),
 }
 
+// ─── Gemini Creator Assistant ────────────────────────────────────────
+export const helpbotAPI = {
+  status: () => api.get('/api/helpbot/status'),
+  chat: (message, history = []) => api.post('/api/helpbot/chat', { message, history }),
+}
+
 // ─── Admin ───────────────────────────────────────────────────────────
 export const adminAPI = {
   getDashboard: () => api.get('/api/admin/dashboard'),
