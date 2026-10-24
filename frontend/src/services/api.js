@@ -26,7 +26,15 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+      localStorage.removeItem('auth-storage')
       window.location.href = '/login'
+    }
+    const detailText = String(error.response?.data?.detail || '').toLowerCase()
+    if (error.response?.status === 403 && (detailText.includes('required role: creator') || detailText.includes('creator access only'))) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      localStorage.removeItem('auth-storage')
+      window.location.href = '/login?role=creator'
     }
     // Normalize FastAPI 422 validation errors if detail is an array or object
     if (error.response?.data?.detail) {

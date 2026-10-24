@@ -241,6 +241,11 @@ export default function AIGeneratorPage() {
                 <span style={{ fontSize: 11, color: 'var(--text-secondary)', alignSelf: 'flex-end' }}>
                   {prompt.length}/{config.limits?.max_prompt_chars || 2000}
                 </span>
+                {prompt.trim().length < 3 && (
+                  <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+                    Type at least 3 characters to enable Gemini and Generate Video.
+                  </span>
+                )}
               </label>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12 }}>
