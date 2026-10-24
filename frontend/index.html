@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>AI CreatorHub — AI Content Creator Marketplace</title>
+    <meta name="description" content="AI CreatorHub — The World's #1 AI Content Creator Marketplace. Find top AI video creators, image generators, UGC creators, and prompt engineers for your brand." />
+    <meta name="keywords" content="AI creators, UGC creators, AI video creation, AI content marketplace, hire AI creators, MidJourney, Runway, Sora creators" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://aicreatorhub.com/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AI CreatorHub — AI Content Creator Marketplace" />
+    <meta property="og:description" content="Connect with 5,000+ AI-powered content creators. Get stunning videos, images, animations, UGC ads and more." />
+    <meta property="og:url" content="https://aicreatorhub.com/" />
+    <meta property="og:site_name" content="AI CreatorHub" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AI CreatorHub — AI Content Creator Marketplace" />
+    <meta name="twitter:description" content="Connect with 5,000+ AI-powered content creators." />
+
+    <meta name="theme-color" content="#183B3A" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+      #splash {
+        position: fixed; inset: 0; z-index: 9999;
+        background: #111518;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 16px;
+        font-family: 'Inter', system-ui, sans-serif;
+        transition: opacity 0.4s ease;
+      }
+      #splash.hidden { opacity: 0; pointer-events: none; }
+      .splash-logo {
+        width: 56px; height: 56px; border-radius: 14px;
+        background: #183B3A;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 26px;
+        border: 1px solid rgba(141,211,195,0.2);
+      }
+      .splash-text {
+        font-size: 18px; font-weight: 700;
+        color: #F2F4F7;
+        letter-spacing: -0.02em;
+      }
+      .splash-sub { font-size: 12px; color: #9AA7B2; }
+      .splash-bar {
+        width: 140px; height: 2px; border-radius: 2px;
+        background: rgba(255,255,255,0.08);
+        overflow: hidden; margin-top: 4px;
+      }
+      .splash-bar-inner {
+        height: 100%; border-radius: 2px;
+        background: #0F766E;
+        animation: loading 1.5s ease-in-out infinite;
+      }
+      @keyframes loading { 0%{width:0;margin-left:0} 50%{width:100%;margin-left:0} 100%{width:0;margin-left:100%} }
+    </style>
+  </head>
+  <body>
+    <div id="splash">
+      <div class="splash-logo">✨</div>
+      <div class="splash-text">AI CreatorHub</div>
+      <div class="splash-sub">Loading marketplace...</div>
+      <div class="splash-bar"><div class="splash-bar-inner"></div></div>
+    </div>
+
+    <div id="root"></div>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        const observer = new MutationObserver(() => {
+          const root = document.getElementById('root')
+          if (root && root.children.length > 0) {
+            const splash = document.getElementById('splash')
+            if (splash) {
+              splash.classList.add('hidden')
+              setTimeout(() => splash.remove(), 450)
+            }
+            observer.disconnect()
+          }
+        })
+        observer.observe(document.getElementById('root'), { childList: true })
+      })
+    </script>
+  </body>
+</html>

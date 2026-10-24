@@ -1,0 +1,1094 @@
+<USER_REQUEST>
+Upgrade my EXISTING completed AI CreatorHub project by adding a new
+
+CREATOR-ONLY AI Video Studio.
+
+
+
+Do not rebuild the project.
+
+Preserve existing authentication, orders, chat, assignments, payments,
+
+video uploads, and admin approval workflow.
+
+
+
+First inspect the existing codebase and reuse the current architecture,
+
+storage, authentication, design tokens, and libraries.
+
+
+
+==================================================
+
+1. FEATURE PURPOSE AND ACCESS
+
+==================================================
+
+
+
+Add an “AI Studio” page where creators can prepare and edit videos
+
+for their assigned client projects.
+
+
+
+The workspace should be inspired by the usability of a timeline-based
+
+editor such as CapCut, but use original branding and UI assets.
+
+
+
+Do not copy CapCut branding, logos, or proprietary assets.
+
+
+
+IMPORTANT ROLE REQUIREMENT:
+
+
+
+Only authenticated users whose current role is “creator” can access
+
+the Studio workspace and Studio APIs.
+
+
+
+- Creator: allowed.
+
+- Client: denied.
+
+- Admin: denied access to the editing workspace.
+
+- Guest: redirected to login.
+
+
+
+Admins must still review submitted video deliveries through the
+
+EXISTING admin approval page, not through the creator Studio.
+
+
+
+Add “AI Studio” to the creator dashboard/sidebar only.
+
+Do not show the menu item in client or admin navigation.
+
+
+
+Protect access server-side.
+
+Hiding the navigation link is not sufficient.
+
+
+
+Suggested frontend route:
+
+ /creator/ai-studio
+
+
+
+Use the actual project conventions.
+
+
+
+==================================================
+
+2. REALISTIC IMPLEMENTATION SCOPE
+
+==================================================
+
+
+
+Build a functional initial video editor, not a static visual mockup.
+
+
+
+Prioritize a reliable core workflow:
+
+Import → Edit → Save → Export → Submit for Admin Review.
+
+
+
+Do not claim full CapCut feature parity.
+
+
+
+Implement advanced features only when technically supported.
+
+Clearly distinguish working features, provider-dependent features,
+
+and unavailable features.
+
+
+
+Do not add nonfunctional buttons pretending features are implemented.
+
+
+
+==================================================
+
+3. STUDIO WORKSPACE
+
+==================================================
+
+
+
+Use the existing Microsoft-inspired theme.
+
+
+
+Layout:
+
+
+
+Top toolbar:
+
+- Back to creator dashboard
+
+- Project title
+
+- Save status
+
+- Save button
+
+- Undo / Redo for supported editing actions
+
+- Export button
+
+- Submit for Admin Review button
+
+
+
+Left panel with tabs:
+
+- My Media
+
+- Text
+
+- Audio
+
+- Captions
+
+- AI Tools
+
+
+
+Center:
+
+- Video preview canvas
+
+- Play / Pause
+
+- Current time / duration
+
+- Seek control
+
+- Aspect-ratio selector
+
+- Preview zoom
+
+
+
+Right panel:
+
+- Selected clip/text/audio properties
+
+
+
+Bottom:
+
+- Timeline
+
+- Playhead
+
+- Video track
+
+- Text/caption track
+
+- Audio track
+
+- Clip selection
+
+- Timeline zoom
+
+
+
+Use resizable panels where practical.
+
+Provide a usable stacked layout on smaller screens.
+
+
+
+==================================================
+
+4. STUDIO PROJECTS
+
+==================================================
+
+
+
+Creators can:
+
+
+
+- Create a Studio project.
+
+- Link it to an order assigned to them.
+
+- Open existing Studio projects.
+
+- Rename projects.
+
+- Save drafts.
+
+- Duplicate drafts if practical.
+
+- Resume editing after refresh.
+
+- Delete their own drafts with confirmation.
+
+
+
+Only allow linking to eligible orders assigned to that creator.
+
+Validate assignment on the backend, not just in the dropdown.
+
+
+
+Persist:
+
+- Project metadata
+
+- Timeline structure
+
+- Media references
+
+- Text/captions
+
+- Audio settings
+
+- Output settings
+
+- Save revision/version
+
+
+
+Do not store video binaries inside localStorage or the database.
+
+
+
+Autosave project JSON with debouncing.
+
+Show:
+
+- Saving
+
+- Saved
+
+- Unsaved changes
+
+- Save failed / Retry
+
+
+
+Prevent silent overwrites from simultaneous editing sessions.
+
+
+
+==================================================
+
+5. FUNCTIONAL CORE EDITING
+
+==================================================
+
+
+
+Implement:
+
+
+
+Media:
+
+- Upload video, images, and audio.
+
+- Media library with thumbnails and metadata.
+
+- Add assets to timeline.
+
+- Remove assets from timeline.
+
+- Validate file types and configured size limits.
+
+
+
+Video:
+
+- Arrange clips sequentially.
+
+- Trim start/end.
+
+- Split at playhead.
+
+- Delete selected clip.
+
+- Reorder clips.
+
+- Fit / fill positioning.
+
+- Supported aspect ratios:
+
+  - 16:9
+
+  - 9:16
+
+  - 1:1
+
+
+
+Text:
+
+- Add text overlay.
+
+- Edit text.
+
+- Set start/end times.
+
+- Change font size, color, alignment, and position.
+
+- Support Tamil and English with appropriate installed fonts.
+
+
+
+Audio:
+
+- Add background audio.
+
+- Trim audio.
+
+- Set volume.
+
+- Mute original clip audio.
+
+- Keep basic audio/video synchronization.
+
+
+
+Captions:
+
+- Manually add and edit timed captions.
+
+- Import/export SRT where practical.
+
+- Preview captions on video.
+
+
+
+Limit unsupported transitions/effects rather than showing fake controls.
+
+
+
+Editing preview and final export must use the same project model.
+
+Do not export the original file unchanged while previewing edits.
+
+
+
+==================================================
+
+6. AI TOOLS
+
+==================================================
+
+
+
+Provide creator-oriented AI tools:
+
+
+
+A. Script Assistant
+
+Inputs:
+
+- Topic
+
+- Audience
+
+- Language: Tamil / English
+
+- Tone
+
+- Target duration
+
+- Platform
+
+
+
+Outputs:
+
+- Script
+
+- Scene suggestions
+
+- On-screen text suggestions
+
+- Call to action
+
+
+
+Allow creators to edit the generated output.
+
+
+
+B. Caption Generation
+
+If a transcription provider or supported local engine is configured:
+
+- Generate timed captions from selected audio/video.
+
+- Allow correction before applying.
+
+
+
+Do not generate fake timestamps or pretend transcription succeeded
+
+when no transcription engine is configured.
+
+
+
+Manual captions must remain usable without an AI key.
+
+
+
+C. Voiceover
+
+If a configured TTS provider supports the requested language:
+
+- Generate voiceover.
+
+- Preview it.
+
+- Add it to the media library/timeline.
+
+
+
+Show supported languages accurately.
+
+Do not claim Tamil voice support unless the integration supports it.
+
+
+
+D. AI Video Generation
+
+Provide this only through a genuinely configured supported provider.
+
+
+
+Workflow:
+
+- Enter prompt.
+
+- Select supported output settings.
+
+- Start generation job.
+
+- Show real queued/running/completed/failed states.
+
+- Save successful output as creator-owned media.
+
+- Allow adding the generated clip to the timeline.
+
+
+
+Do not pretend text-generation APIs generate video.
+
+Do not invent provider model names or API endpoints.
+
+
+
+All AI integrations must run server-side.
+
+Never expose API keys in frontend bundles.
+
+
+
+If provider credentials are absent:
+
+- Show “Configure AI provider to enable this feature.”
+
+- Keep normal video editing functional.
+
+- Do not silently substitute fake generated videos or captions.
+
+
+
+Do not send an order brief, client media, or other private content to
+
+an external provider automatically. Show what will be sent and require
+
+the creator to explicitly initiate the relevant generation action.
+
+
+
+==================================================
+
+7. EXPORT PIPELINE
+
+==================================================
+
+
+
+Inspect available infrastructure before choosing implementation.
+
+
+
+Prefer a Python backend render pipeline using FFmpeg if supported
+
+by the deployment environment.
+
+
+
+Use the existing background-job infrastructure if available.
+
+
+
+For local development, provide a documented worker setup if needed.
+
+Do not run long video renders directly inside a blocking request handler.
+
+
+
+Export options:
+
+- MP4
+
+- H.264 video where supported
+
+- AAC audio where supported
+
+- 720p
+
+- 1080p only when supported by deployment limits
+
+- Selected aspect ratio
+
+
+
+Render the actual timeline:
+
+- Trimmed clips
+
+- Clip order
+
+- Text overlays
+
+- Captions
+
+- Audio mix
+
+- Aspect-ratio layout
+
+
+
+Show export status:
+
+- Queued
+
+- Rendering
+
+- Completed
+
+- Failed
+
+- Cancelled, if cancellation is implemented
+
+
+
+Use real progress where available.
+
+Otherwise show an indeterminate rendering state rather than fabricated
+
+percentage progress.
+
+
+
+Validate all render parameters.
+
+Never interpolate user inputs into shell commands.
+
+Use safe subprocess argument arrays and server-generated paths.
+
+Allow only authorized uploaded assets, not arbitrary URLs or filesystem paths.
+
+
+
+Apply configurable limits:
+
+- Input size
+
+- Project duration
+
+- Resolution
+
+- Concurrent jobs
+
+- Job timeout
+
+- Output retention
+
+
+
+Clean up temporary render files safely.
+
+Do not delete source media still referenced by projects.
+
+
+
+If FFmpeg or worker infrastructure is missing, report the precise blocker
+
+and setup steps. Do not mark exports as working without an actual render.
+
+
+
+==================================================
+
+8. INTEGRATE EXISTING ADMIN APPROVAL WORKFLOW
+
+==================================================
+
+
+
+Studio output must NOT bypass existing review.
+
+
+
+Required flow:
+
+
+
+Creator edits video
+
+→ Exports final video
+
+→ Previews exported result
+
+→ Selects “Submit for Admin Review”
+
+→ Existing delivery submission is created
+
+→ Admin reviews in existing Video Approvals page
+
+→ Admin approves or requests changes
+
+→ Only approved version becomes client-visible.
+
+
+
+Use the existing delivery API/service and versioning model.
+
+Do not create an incompatible parallel delivery system.
+
+
+
+Requirements:
+
+
+
+- Completed export is required before submission.
+
+- Submission must reference the exact exported file.
+
+- Export must belong to the current creator.
+
+- Linked order must still be assigned to that creator.
+
+- Repeated clicks must not create duplicate submissions.
+
+- Submitted files must be immutable.
+
+- Later edits create a new export/version.
+
+- Revisions require fresh admin approval.
+
+- Creator sees review status and feedback in Studio.
+
+
+
+Admin approval must not automatically mean client acceptance
+
+or order completion.
+
+
+
+==================================================
+
+9. PRIVACY AND SECURITY
+
+==================================================
+
+
+
+All Studio assets, drafts, and exports are private.
+
+
+
+Creators can access only their own Studio projects and media.
+
+
+
+Clients cannot access:
+
+- Draft projects
+
+- Source clips
+
+- Pending exports
+
+- Unapproved deliveries
+
+- Studio APIs
+
+
+
+Admins can access submitted delivery artifacts through existing review
+
+permissions, but cannot access the creator editing workspace by default.
+
+
+
+Protect:
+
+- Project APIs
+
+- Media uploads
+
+- Preview streams
+
+- Render jobs
+
+- Job status
+
+- Export downloads
+
+- AI generation jobs
+
+
+
+Do not expose private storage buckets or directories publicly.
+
+
+
+Use authorized streaming endpoints or short-lived authorized links.
+
+Validate ownership when issuing links.
+
+
+
+Re-check authorization on all write actions, render starts,
+
+and delivery submissions.
+
+
+
+==================================================
+
+10. DATA MODEL AND APIS
+
+==================================================
+
+
+
+Adapt to existing schema.
+
+
+
+Suggested entities:
+
+
+
+studio_projects:
+
+- id
+
+- creator_id
+
+- order_id, nullable for draft projects
+
+- title
+
+- timeline_json
+
+- output_settings_json
+
+- revision_number
+
+- created_at
+
+- updated_at
+
+
+
+studio_assets:
+
+- id
+
+- creator_id
+
+- project_id
+
+- media_type
+
+- storage_key
+
+- original_filename
+
+- detected_content_type
+
+- file_size
+
+- duration
+
+- metadata_json
+
+- created_at
+
+
+
+studio_render_jobs:
+
+- id
+
+- project_id
+
+- creator_id
+
+- project_revision
+
+- timeline_snapshot_json
+
+- status
+
+- progress, nullable
+
+- output_storage_key
+
+- error_message
+
+- started_at
+
+- completed_at
+
+- created_at
+
+
+
+Link completed exports to the existing delivery submission model
+
+without duplicating its approval logic.
+
+
+
+Suggested API areas:
+
+
+
+/api/creator/studio/projects
+
+/api/creator/studio/assets
+
+/api/creator/studio/render-jobs
+
+/api/creator/studio/ai
+
+
+
+Create migrations without resetting existing data.
+
+Use existing endpoint naming conventions where appropriate.
+
+
+
+==================================================
+
+11. UX AND ACCESSIBILITY
+
+==================================================
+
+
+
+Include:
+
+
+
+- First-use guidance
+
+- Empty project state
+
+- Import hints
+
+- Keyboard-accessible controls
+
+- Tooltips
+
+- Visible focus
+
+- Clear save/export errors
+
+- Retry actions
+
+- Unsaved changes warning
+
+- Accessible form labels
+
+- Reduced-motion support
+
+- Light/dark theme consistency
+
+
+
+Do not make dragging the only way to trim or reorder.
+
+Provide numeric trim inputs and move-left/move-right alternatives.
+
+
+
+Keep preview playback separate from export status.
+
+Show when the preview is an approximation of a final render.
+
+
+
+==================================================
+
+12. TESTS AND ACCEPTANCE CRITERIA
+
+==================================================
+
+
+
+Actually test:
+
+
+
+1. Creator can open Studio.
+
+2. Client, admin, and guest cannot access the workspace.
+
+3. Non-creators cannot access Studio APIs directly.
+
+4. Creator A cannot access Creator B's projects/media/jobs.
+
+5. Upload and media library work.
+
+6. Trim, reorder, text, captions, and audio changes save correctly.
+
+7. Refresh restores the project.
+
+8. Export contains the actual edits.
+
+9. Export failure shows a useful error.
+
+10. Render jobs cannot read unauthorized files.
+
+11. Creator submits a completed export for review.
+
+12. Admin sees it in the existing approval dashboard.
+
+13. Client cannot access it before approval.
+
+14. Admin approval makes the exact exported version available.
+
+15. New edits do not modify a previously submitted video.
+
+16. Revised exports need fresh approval.
+
+17. Missing AI keys do not break normal editing.
+
+18. No secrets appear in frontend code.
+
+19. Existing marketplace, chat, assignment, and delivery workflows
+
+    still work.
+
+20. Frontend build and relevant backend tests pass.
+
+
+
+Use small disposable test media and isolated data.
+
+Do not perform paid AI calls without explicit authorization.
+
+
+
+==================================================
+
+13. IMPLEMENTATION AND HANDOFF
+
+==================================================
+
+
+
+Implement in manageable stages:
+
+
+
+1. Inspect architecture.
+
+2. Add creator-only routing and backend authorization.
+
+3. Add persistent Studio projects/media.
+
+4. Implement core editor and preview.
+
+5. Implement actual export pipeline.
+
+6. Connect existing delivery approval workflow.
+
+7. Add configured AI features.
+
+8. Test and fix regressions.
+
+
+
+After inspection, briefly identify any infrastructure blockers.
+
+Then begin implementing the working core rather than stopping at a plan.
+
+
+
+Final report:
+
+- Features actually implemented
+
+- Files changed
+
+- Migrations and environment settings
+
+- Worker/FFmpeg setup, if required
+
+- AI provider configuration
+
+- Tests actually executed
+
+- Known limits
+
+- Any blocked or unimplemented features
+
+
+
+Do not describe static UI, mock generations, or untested exports
+
+as completed functionality.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-19T12:02:52+05:30.
+
+The user's current state is as follows:
+Active Document: c:\Users\manik\OneDrive\Desktop\Mani\ai-creatorhub\backend\app\api\support.py (LANGUAGE_PYTHON)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\manik\OneDrive\Desktop\Mani\ai-creatorhub\frontend\src\pages\creator\CreatorDashboard.jsx (LANGUAGE_JAVASCRIPT)
+- c:\Users\manik\OneDrive\Desktop\Mani\ai-creatorhub\backend\test_steps_17_18.py (LANGUAGE_PYTHON)
+- c:\Users\manik\OneDrive\Desktop\Mani\ai-creatorhub\backend\test_delivery_e2e_p2.py (LANGUAGE_PYTHON)
+- c:\Users\manik\OneDrive\Desktop\Mani\ai-creatorhub\backend\.env (LANGUAGE_UNSPECIFIED)
+- c:\Users\manik\OneDrive\Desktop\Mani\ai-creatorhub\backend\app\models\creator.py (LANGUAGE_PYTHON)
+</ADDITIONAL_METADATA>

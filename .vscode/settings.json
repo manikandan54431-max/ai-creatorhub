@@ -1,0 +1,11 @@
+{
+  "python.defaultInterpreterPath": "C:\\Users\\manik\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+  "python.analysis.extraPaths": [
+    "c:\\Users\\manik\\OneDrive\\Desktop\\Mani\\ai-creatorhub\\backend",
+    "C:\\Users\\manik\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages"
+  ],
+  "python.autoComplete.extraPaths": [
+    "c:\\Users\\manik\\OneDrive\\Desktop\\Mani\\ai-creatorhub\\backend",
+    "C:\\Users\\manik\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages"
+  ]
+}

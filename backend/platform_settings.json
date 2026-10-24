@@ -1,0 +1,67 @@
+{
+  "general": {
+    "platform_name": "AI CreatorHub",
+    "tagline": "The Premier Marketplace for AI-Powered Content Creators & Brands",
+    "support_email": "manikandan54431@gmail.com",
+    "contact_phone": "+91 6380994709",
+    "currency": "INR",
+    "currency_symbol": "\u20b9",
+    "timezone": "Asia/Kolkata (IST)",
+    "maintenance_mode": false,
+    "maintenance_message": "AI CreatorHub is undergoing scheduled maintenance. We'll be back shortly!"
+  },
+  "financial": {
+    "commission_percentage": 20,
+    "min_order_budget": 500,
+    "max_order_budget": 500000,
+    "creator_payout_threshold": 2000,
+    "escrow_hold_days": 7,
+    "payment_gateway": "Razorpay / Stripe (Sandbox Active)",
+    "auto_refund_on_cancel": true,
+    "allow_crypto_payouts": false
+  },
+  "creator_rules": {
+    "auto_approve_creators": false,
+    "require_portfolio_approval": true,
+    "auto_verify_min_orders": 10,
+    "auto_verify_min_rating": 4.8,
+    "max_concurrent_orders": 5,
+    "allow_direct_messaging": true,
+    "featured_creator_slots": 6,
+    "supported_ai_tools": [
+      "Midjourney",
+      "Runway Gen-2",
+      "ElevenLabs",
+      "Stable Diffusion",
+      "Sora",
+      "ChatGPT",
+      "Claude 3.5 Sonnet",
+      "Suno AI",
+      "Pika",
+      "Flux.1",
+      "HeyGen"
+    ]
+  },
+  "moderation": {
+    "chat_auto_moderation": true,
+    "moderation_sensitivity": "low",
+    "flagged_keywords": [
+      "whatsapp",
+      "telegram",
+      "gpay",
+      "phonepe",
+      "paypal direct",
+      "pay off platform",
+      "call me at"
+    ]
+  },
+  "security": {
+    "enforce_strong_passwords": true,
+    "session_timeout_minutes": 10080,
+    "admin_email_alerts": true,
+    "dispute_immediate_alert": true,
+    "high_value_order_alert_threshold": 50000,
+    "rate_limiting_enabled": true,
+    "max_login_attempts": 5
+  }
+}
