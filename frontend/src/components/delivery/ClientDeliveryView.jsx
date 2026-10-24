@@ -189,6 +189,7 @@ export default function ClientDeliveryView({ order, onRevisionRequest }) {
 function ApprovedDeliveryPlayer({ delivery: d, order, onRevisionRequest }) {
   const [accepting, setAccepting] = useState(false)
   const [requesting, setRequesting] = useState(false)
+  const [videoError, setVideoError] = useState(false)
   const [revisionReason, setRevisionReason] = useState('')
   const [showRevisionForm, setShowRevisionForm] = useState(false)
 
@@ -252,6 +253,8 @@ function ApprovedDeliveryPlayer({ delivery: d, order, onRevisionRequest }) {
         <video
           controls
           preload="metadata"
+          playsInline
+          onError={() => setVideoError(true)}
           style={{ borderRadius: 8 }}
           src={streamUrl}
         >
@@ -261,6 +264,11 @@ function ApprovedDeliveryPlayer({ delivery: d, order, onRevisionRequest }) {
           </p>
         </video>
       </div>
+      {videoError && (
+        <div style={{ marginBottom: 16, padding: '12px 14px', borderRadius: 8, background: 'rgba(239,68,68,0.08)', color: 'var(--text-secondary)', fontSize: 13 }}>
+          This video could not be previewed in the browser. <a href={downloadUrl} style={{ color: 'var(--ms-blue)', fontWeight: 700 }}>Download the video</a> and open it with a video player.
+        </div>
+      )}
 
       {/* Delivery notes */}
       {d.description && (

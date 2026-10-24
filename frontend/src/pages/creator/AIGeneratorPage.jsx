@@ -323,6 +323,7 @@ function JobCard({ job, onSave, onOpenStudio, onRetry, busy, highlight }) {
   const meta = STATUS_META[job.status] || STATUS_META.failed
   const StatusIcon = meta.icon
   const spinning = ['generating', 'saving_output', 'queued'].includes(job.status)
+  const [videoError, setVideoError] = useState(false)
 
   return (
     <motion.div
@@ -359,8 +360,16 @@ function JobCard({ job, onSave, onOpenStudio, onRetry, busy, highlight }) {
             key={job.id}
             src={aiGeneratorAPI.jobStreamUrl(job.id)}
             controls
+            playsInline
+            preload="metadata"
+            onError={() => setVideoError(true)}
             style={{ width: '100%', maxHeight: 420, borderRadius: 10, background: '#000' }}
           />
+          {videoError && (
+            <div style={{ color: 'var(--text-secondary)', fontSize: 13 }}>
+              Preview failed. Use the Download button below to open the generated video locally.
+            </div>
+          )}
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <a href={aiGeneratorAPI.jobDownloadUrl(job.id)} style={secondaryBtn}><Download size={15} /> Download</a>
             <button style={secondaryBtn} disabled={busy} onClick={() => onSave(job)}><Save size={15} /> Save to My Media</button>
