@@ -112,6 +112,15 @@ export const notificationsAPI = {
   markAllRead: () => api.put('/api/notifications/mark-all-read'),
 }
 
+// ─── Gemini AI helpers ────────────────────────────────────────────────
+export const aiAPI = {
+  improvePrompt: (roughIdea) => api.post('/api/ai/improve-prompt', {
+    rough_idea: roughIdea,
+    category: 'AI video',
+    platform: 'Instagram Reels / YouTube Shorts / Web',
+  }),
+}
+
 // ─── Admin ───────────────────────────────────────────────────────────
 export const adminAPI = {
   getDashboard: () => api.get('/api/admin/dashboard'),

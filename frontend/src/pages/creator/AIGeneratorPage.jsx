@@ -18,7 +18,7 @@ import {
   Loader, AlertTriangle, CheckCircle, XCircle, Clock, RefreshCw,
 } from 'lucide-react'
 
-import { aiGeneratorAPI } from '../../services/api'
+import { aiGeneratorAPI, aiAPI } from '../../services/api'
 import { formatDate } from '../../utils/format'
 
 const ACTIVE = ['queued', 'generating', 'saving_output']
@@ -39,6 +39,7 @@ export default function AIGeneratorPage() {
   const [loadingConfig, setLoadingConfig] = useState(true)
 
   const [prompt, setPrompt] = useState('')
+  const [improvingPrompt, setImprovingPrompt] = useState(false)
   const [aspectRatio, setAspectRatio] = useState('16:9')
   const [quality, setQuality] = useState('540p')
   const [duration, setDuration] = useState(5)
@@ -118,6 +119,23 @@ export default function AIGeneratorPage() {
       toast.error(e.response?.data?.detail || 'Could not start generation.')
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const handleImprovePrompt = async () => {
+    const p = prompt.trim()
+    if (p.length < 3) { toast.error('Enter a rough idea first.'); return }
+    setImprovingPrompt(true)
+    try {
+      const res = await aiAPI.improvePrompt(p)
+      if (res.data?.result) {
+        setPrompt(res.data.result)
+        toast.success('Gemini improved your video prompt.')
+      }
+    } catch (e) {
+      toast.error(e.response?.data?.detail || 'Could not improve the prompt.')
+    } finally {
+      setImprovingPrompt(false)
     }
   }
 
@@ -201,7 +219,17 @@ export default function AIGeneratorPage() {
             {/* Generator form */}
             <div style={{ ...card, flexDirection: 'column', alignItems: 'stretch', gap: 16 }}>
               <label style={labelStyle}>
-                Prompt
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                  <span>Prompt</span>
+                  <button
+                    type="button"
+                    onClick={handleImprovePrompt}
+                    disabled={improvingPrompt || prompt.trim().length < 3}
+                    style={{ ...secondaryBtn, padding: '6px 10px', fontSize: 12, opacity: improvingPrompt || prompt.trim().length < 3 ? 0.55 : 1 }}
+                  >
+                    {improvingPrompt ? <><Loader size={13} className="spin" /> Improving…</> : <><Sparkles size={13} /> Improve with Gemini</>}
+                  </button>
+                </div>
                 <textarea
                   value={prompt}
                   onChange={e => setPrompt(e.target.value)}
