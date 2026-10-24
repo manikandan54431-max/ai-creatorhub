@@ -5,7 +5,7 @@ import { chatsAPI } from '../../services/api'
 import { useAuthStore } from '../../store'
 import { Send, Search, MessageCircle, Paperclip, Image, ChevronLeft } from 'lucide-react'
 
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000'
+const WS_URL = import.meta.env.VITE_WS_URL || 'wss://manihub-hhznnkea.manus.space'
 
 export default function ChatPage() {
   const { user } = useAuthStore()

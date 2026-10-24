@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 const api = axios.create({
   baseURL: API_URL,
@@ -181,8 +181,8 @@ export const deliveryAPI = {
       onUploadProgress: (pe) => onProgress && onProgress(Math.round((pe.loaded / pe.total) * 100)),
     }),
   submitForReview: (deliveryId) => api.post(`/api/deliveries/${deliveryId}/submit`),
-  streamUrl: (deliveryId) => `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/deliveries/${deliveryId}/stream`,
-  downloadUrl: (deliveryId) => `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/deliveries/${deliveryId}/download`,
+  streamUrl: (deliveryId) => `${import.meta.env.VITE_API_URL || ''}/api/deliveries/${deliveryId}/stream`,
+  downloadUrl: (deliveryId) => `${import.meta.env.VITE_API_URL || ''}/api/deliveries/${deliveryId}/download`,
 }
 
 // ─── Editing Requests (client source media -> creator edits) ──────────
@@ -202,12 +202,12 @@ export const editingRequestsAPI = {
   // them; the endpoint re-checks authorisation on every request.
   mediaStreamUrl: (requestId, mediaId) => {
     const token = localStorage.getItem('token') || ''
-    const base = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+    const base = import.meta.env.VITE_API_URL || ''
     return `${base}/api/editing-requests/${requestId}/media/${mediaId}/stream${token ? '?token=' + encodeURIComponent(token) : ''}`
   },
   mediaDownloadUrl: (requestId, mediaId) => {
     const token = localStorage.getItem('token') || ''
-    const base = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+    const base = import.meta.env.VITE_API_URL || ''
     return `${base}/api/editing-requests/${requestId}/media/${mediaId}/download${token ? '?token=' + encodeURIComponent(token) : ''}`
   },
 }
@@ -249,7 +249,7 @@ export const studioAPI = {
   deleteAsset: (id) => api.delete(`/api/creator/studio/assets/${id}`),
   assetStreamUrl: (id) => {
     const token = localStorage.getItem('token') || ''
-    const base = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+    const base = import.meta.env.VITE_API_URL || ''
     return `${base}/api/creator/studio/assets/${id}/stream${token ? '?token=' + encodeURIComponent(token) : ''}`
   },
 
@@ -265,7 +265,7 @@ export const studioAPI = {
   getRenderJob: (id) => api.get(`/api/creator/studio/render-jobs/${id}`),
   renderDownloadUrl: (id) => {
     const token = localStorage.getItem('token') || ''
-    const base = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+    const base = import.meta.env.VITE_API_URL || ''
     return `${base}/api/creator/studio/render-jobs/${id}/download${token ? '?token=' + encodeURIComponent(token) : ''}`
   },
   submitForReview: (jobId, data) => api.post(`/api/creator/studio/render-jobs/${jobId}/submit-for-review`, data),
@@ -282,12 +282,12 @@ export const aiGeneratorAPI = {
   retrySave: (id) => api.post(`/api/creator/ai-generator/jobs/${id}/retry-save`),
   jobStreamUrl: (id) => {
     const token = localStorage.getItem('token') || ''
-    const base = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+    const base = import.meta.env.VITE_API_URL || ''
     return `${base}/api/creator/ai-generator/jobs/${id}/stream${token ? '?token=' + encodeURIComponent(token) : ''}`
   },
   jobDownloadUrl: (id) => {
     const token = localStorage.getItem('token') || ''
-    const base = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+    const base = import.meta.env.VITE_API_URL || ''
     return `${base}/api/creator/ai-generator/jobs/${id}/download${token ? '?token=' + encodeURIComponent(token) : ''}`
   },
 }
