@@ -255,8 +255,9 @@ function SubmissionDetailModal({ deliveryId, onClose, onAction }) {
 
   const token = localStorage.getItem('token') || ''
   const tokenParam = token ? `?token=${encodeURIComponent(token)}` : ''
-  const streamUrl = `/api/deliveries/${deliveryId}/stream${tokenParam}`
-  const downloadUrl = `/api/deliveries/${deliveryId}/download${tokenParam}`
+  const apiBase = import.meta.env.VITE_API_URL || ''
+  const streamUrl = `${apiBase}/api/deliveries/${deliveryId}/stream${tokenParam}`
+  const downloadUrl = `${apiBase}/api/deliveries/${deliveryId}/download${tokenParam}`
 
   useEffect(() => {
     loadDetail()

@@ -167,7 +167,7 @@ export default function ClientDeliveryView({ order, onRevisionRequest }) {
                     </span>
                   </div>
                   <a
-                    href={`/api/deliveries/${d.id}/download${localStorage.getItem('token') ? `?token=${encodeURIComponent(localStorage.getItem('token'))}` : ''}`}
+                    href={`${import.meta.env.VITE_API_URL || ''}/api/deliveries/${d.id}/download${localStorage.getItem('token') ? `?token=${encodeURIComponent(localStorage.getItem('token'))}` : ''}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-secondary btn-sm"
@@ -194,8 +194,9 @@ function ApprovedDeliveryPlayer({ delivery: d, order, onRevisionRequest }) {
 
   const token = localStorage.getItem('token') || ''
   const tokenParam = token ? `?token=${encodeURIComponent(token)}` : ''
-  const streamUrl = `/api/deliveries/${d.id}/stream${tokenParam}`
-  const downloadUrl = `/api/deliveries/${d.id}/download${tokenParam}`
+  const apiBase = import.meta.env.VITE_API_URL || ''
+  const streamUrl = `${apiBase}/api/deliveries/${d.id}/stream${tokenParam}`
+  const downloadUrl = `${apiBase}/api/deliveries/${d.id}/download${tokenParam}`
 
   async function handleAccept() {
     setAccepting(true)
