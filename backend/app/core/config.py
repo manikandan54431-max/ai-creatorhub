@@ -16,6 +16,11 @@ class Settings(BaseSettings):
     MYSQL_PASSWORD: Optional[str] = None
     MYSQL_DATABASE: Optional[str] = None
     MYSQL_SSL_CA: Optional[str] = None        # filesystem path to the Aiven CA (ca.pem)
+    # Alternative to MYSQL_SSL_CA for hosts where you cannot commit a cert file
+    # (e.g. Render). Paste the full PEM text of the Aiven CA into this env var;
+    # at startup the app writes it to a temp file and uses that as the CA path.
+    # If both are set, MYSQL_SSL_CA_CONTENT wins. Never commit the real value.
+    MYSQL_SSL_CA_CONTENT: Optional[str] = None
     SECRET_KEY: str = "super-secret-key-change-in-production-32chars"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 10080  # 7 days

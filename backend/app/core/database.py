@@ -1,4 +1,5 @@
 ﻿import os
+import tempfile
 
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
@@ -6,6 +7,34 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 from app.core.config import settings
+
+
+def _resolve_ca_path() -> str:
+    """Return a filesystem path to the Aiven CA certificate.
+
+    Two ways to supply it, path wins only when content is absent:
+      1. MYSQL_SSL_CA_CONTENT — the PEM text itself (for hosts like Render where
+         a cert file cannot be committed). Written to a temp file at startup.
+      2. MYSQL_SSL_CA — a path to an existing ca.pem on disk (local dev).
+
+    TLS verification is never disabled; a missing/empty cert raises.
+    """
+    content = (settings.MYSQL_SSL_CA_CONTENT or "").strip()
+    if content:
+        ca_path = os.path.join(tempfile.gettempdir(), "aiven-ca.pem")
+        # Overwrite each boot so a rotated cert in the env var takes effect.
+        with open(ca_path, "w", encoding="utf-8") as fh:
+            fh.write(content + "\n")
+        return ca_path
+
+    ca_path = os.path.abspath(os.path.expanduser(settings.MYSQL_SSL_CA or ""))
+    if not os.path.isfile(ca_path):
+        raise RuntimeError(
+            "No Aiven CA certificate available. Set MYSQL_SSL_CA to a readable "
+            "ca.pem path, or paste the certificate text into MYSQL_SSL_CA_CONTENT. "
+            "TLS verification will not be disabled as a workaround."
+        )
+    return ca_path
 
 
 def _build_engine():
@@ -21,13 +50,16 @@ def _build_engine():
     object, URL-encoding special characters) and we never str() it.
     """
     if settings.MYSQL_HOST:
+        # The CA may be supplied either as a path (MYSQL_SSL_CA) or as PEM text
+        # (MYSQL_SSL_CA_CONTENT); require at least one of them, not the path.
+        has_ca = bool((settings.MYSQL_SSL_CA_CONTENT or "").strip()) or bool(settings.MYSQL_SSL_CA)
         missing = [
             name for name, value in (
                 ("MYSQL_PORT", settings.MYSQL_PORT),
                 ("MYSQL_USER", settings.MYSQL_USER),
                 ("MYSQL_PASSWORD", settings.MYSQL_PASSWORD),
                 ("MYSQL_DATABASE", settings.MYSQL_DATABASE),
-                ("MYSQL_SSL_CA", settings.MYSQL_SSL_CA),
+                ("MYSQL_SSL_CA or MYSQL_SSL_CA_CONTENT", has_ca),
             ) if not value
         ]
         if missing:
@@ -37,14 +69,7 @@ def _build_engine():
                 f"environment variables are missing: {', '.join(missing)}"
             )
 
-        ca_path = os.path.abspath(os.path.expanduser(settings.MYSQL_SSL_CA or ""))
-        if not os.path.isfile(ca_path):
-            raise RuntimeError(
-                "MYSQL_SSL_CA does not point to a readable CA certificate file. "
-                "Download the Aiven service CA certificate (ca.pem) from the "
-                "service Overview page and set MYSQL_SSL_CA to its path. "
-                "TLS verification will not be disabled as a workaround."
-            )
+        ca_path = _resolve_ca_path()
 
         url = URL.create(
             drivername="mysql+pymysql",
